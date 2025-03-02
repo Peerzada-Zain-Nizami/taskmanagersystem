@@ -40,7 +40,9 @@ class CategoryController extends Controller
                 'errors' => $errors,
             ], 400);
         } else {
-            $category = Category::create($request->only('name'));
+            $category = Category::create([
+                'name' => $request->name,
+            ]);
 
             return response()->json(['message' => 'Category created', 'category' => $category], 201);
         }
@@ -70,7 +72,7 @@ class CategoryController extends Controller
                 'errors' => $errors,
             ], 400);
         } else {
-            $category->update($request->only('name'));
+            $category->update($request->all());
 
             return response()->json(['message' => 'Category updated']);
         }
