@@ -7,10 +7,30 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUsers()
+    public function getUsers(Request $request)
     {
-        $users = User::all(); // Sare users retrieve karo
-        return response()->json(['users' => $users], 200);
+        $query = User::query();
+
+        // Search by keyword in title
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('email', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        // Order by latest
+        $query->orderBy('created_at', 'desc');
+
+        // Paginate results
+        $users = $query->paginate(10);
+
+        return response()->json($users, 200);
     }
 
     // ✅ Approve user
