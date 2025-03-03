@@ -9,21 +9,19 @@ class NotificationController extends Controller
 {
     public function getNotifications()
     {
-        $notifications = Auth::user()->notifications;
+        $user = Auth::user();
+
+        // Get only the latest unique unread notifications
+        $notifications = $user->unreadNotifications()
+            ->latest() // Latest notifications first
+            ->get()
+            ->unique('type'); // Remove duplicates based on notification type
+
+        // Mark all retrieved notifications as read
+        $notifications->markAsRead();
 
         return response()->json([
             'notifications' => $notifications
         ]);
-    }
-    public function markNotificationAsRead($id)
-    {
-        $notification = Auth::user()->notifications()->where('id', $id)->first();
-
-        if ($notification) {
-            $notification->markAsRead();
-            return response()->json(['message' => 'Notification marked as read']);
-        }
-
-        return response()->json(['message' => 'Notification not found'], 404);
     }
 }
