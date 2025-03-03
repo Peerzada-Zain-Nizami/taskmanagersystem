@@ -162,4 +162,18 @@ class TaskController extends Controller
 
         return response()->json(['activities' => $activities], 200);
     }
+
+    /**
+     * Get task counts based on status.
+     */
+    public function getTaskCounts()
+    {
+        $counts = [
+            'completed' => Task::where('status', 'completed')->count(),
+            'pending' => Task::where('status', 'pending')->count(),
+            'in_progress' => Task::where('status', 'in_progress')->count(),
+        ];
+
+        return response()->json(['task_counts' => $counts], 200);
+    }
 }

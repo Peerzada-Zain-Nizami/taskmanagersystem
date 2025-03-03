@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/tasks/{task}/comment', [TaskCommentController::class, 'index']);
         Route::delete('/task-comments/{id}/delete', [TaskCommentController::class, 'adminCommentDestroy']);
         Route::get('/recent-activities', [TaskController::class, 'recentActivities']);
+        Route::get('/task-counts', [TaskController::class, 'getTaskCounts']);
 
 
 
