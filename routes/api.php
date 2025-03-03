@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
@@ -37,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users', [UserController::class, 'getUsers']);
         Route::post('/approve-user/{id}', [UserController::class, 'approveUser']);
         Route::delete('/destroy-user/{id}', [UserController::class, 'destroyUser']);
+        Route::post('/update-user/{id}', [UserController::class, 'updateUserRole']);
 
         // Category Management
         Route::resource('/categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
@@ -48,7 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
         //stats
         Route::get('/stats', [StatsController::class, 'index']);
+
+        //Notifications
+        Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+        Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markNotificationAsRead']);
     });
+
 
     // 🚀 User-Only Routes
     Route::middleware('user')->prefix('user')->group(function () {

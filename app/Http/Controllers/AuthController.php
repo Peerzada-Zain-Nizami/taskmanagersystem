@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
 use App\Notifications\ResetPassword;
+use App\Notifications\NewUserRegistered;
+use Illuminate\Support\Facades\Notification;
 
 class AuthController extends Controller
 {
@@ -39,6 +41,9 @@ class AuthController extends Controller
                 'role' => 'user',
                 'approved' => false,
             ]);
+
+            $admin = User::where('role', 'admin')->get();
+            Notification::send($admin, new NewUserRegistered($user));
 
             return response()->json(['message' => 'User registered successfully. Waiting for admin approval.'], 201);
         }

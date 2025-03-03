@@ -28,4 +28,11 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message' => 'User deleted successfully']);
     }
+    public function updateUserRole(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->role = $request->role;
+        $user->save();
+        return response()->json(['message' => 'User role updated successfully']);
+    }
 }
