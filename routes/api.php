@@ -58,11 +58,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // 🚀 User-Only Routes
-    Route::middleware('user')->prefix('user')->group(function () {
-        Route::resource('/tasks', TaskController::class)->only(['store', 'update', 'show', 'destroy']);
-        Route::get('/tasks', [TaskController::class, 'userTasks']);
-        Route::get('/tasks/{task}/comments', [TaskCommentController::class, 'index']);
-    });
+    Route::middleware('user')->prefix('user')->group(
+        function () {
+            Route::resource('/tasks', TaskController::class)->only(['store', 'update', 'show', 'destroy']);
+            Route::get('/tasks', [TaskController::class, 'userTasks']);
+            Route::get('/tasks/{task}/comments', [TaskCommentController::class, 'index']);
+            Route::get('categories', [CategoryController::class, 'index']);
+        }
+    );
     // ✅ Logout Route (Common for all authenticated users)
     Route::post('/logout', [AuthController::class, 'logout']);
 });
