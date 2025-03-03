@@ -41,7 +41,7 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = 'http://localhost:5173/reset-password?token=' . $this->token . '&email=' . urlencode($notifiable->email);
+        $url = 'https://task-manager-system-client.vercel.app/reset-password?token=' . $this->token . '&email=' . urlencode($notifiable->email);
         return (new MailMessage)
             ->subject('Reset Password Notification')
             ->line('You are receiving this email because we received a password reset request for your account.')
