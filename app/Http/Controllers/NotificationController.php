@@ -11,11 +11,8 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
 
-        // Get only the latest unique unread notifications
-        $notifications = $user->unreadNotifications()
-            ->latest() // Latest notifications first
-            ->get()
-            ->unique('type'); // Remove duplicates based on notification type
+        // Get all unread notifications & mark them as read
+        $notifications = $user->unreadNotifications()->latest()->get();
 
         // Mark all retrieved notifications as read
         $notifications->markAsRead();
