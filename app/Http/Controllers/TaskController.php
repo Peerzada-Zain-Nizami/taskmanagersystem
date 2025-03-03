@@ -15,7 +15,7 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function userTasks(Request $request)
     {
         $userId = Auth::id();
         $query = Task::where('user_id', $userId);

@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // 🚀 User-Only Routes
     Route::middleware('user')->prefix('user')->group(function () {
         Route::resource('/tasks', TaskController::class)->only(['store', 'update', 'show', 'destroy']);
-        Route::get('/tasks/user', [TaskController::class, 'index']);
+        Route::get('/tasks', [TaskController::class, 'userTasks']);
         Route::get('/tasks/{task}/comments', [TaskCommentController::class, 'index']);
     });
     // ✅ Logout Route (Common for all authenticated users)
