@@ -17,12 +17,10 @@ class CategoryController extends Controller
     {
         $query = Category::query();
 
-        // Search by keyword in name
         if ($request->has('keyword')) {
             $query->where('name', 'like', '%' . $request->keyword . '%');
         }
 
-        // Paginate results
         $category = $query->paginate(10);
 
         return response()->json($category);

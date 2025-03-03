@@ -12,15 +12,12 @@ class UserController extends Controller
         $query = User::query();
 
         // Search by keyword in title
-        if ($request->filled('keyword')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('email', 'like', '%' . $request->keyword . '%');
-            });
+        if ($request->has('keyword')) {
+            $query->where('name', 'like', '%' . $request->keyword . '%');
         }
 
         // Filter by status
-        if ($request->filled('role')) {
+        if ($request->has('role')) {
             $query->where('role', $request->role);
         }
 
