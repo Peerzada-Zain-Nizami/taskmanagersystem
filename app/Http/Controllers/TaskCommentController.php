@@ -52,4 +52,35 @@ class TaskCommentController extends Controller
             return response()->json(['message' => 'Comment added', 'comment' => $comment], 201);
         }
     }
+
+    public function userCommentDestroy($id)
+    {
+        $comment = TaskComment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+
+        // Ensure user can delete only their own comment
+        if ($comment->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted successfully'], 200);
+    }
+
+    public function adminCommentDestroy($id)
+    {
+        $comment = TaskComment::find($id);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted by admin'], 200);
+    }
 }

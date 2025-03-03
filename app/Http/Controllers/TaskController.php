@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -142,5 +143,23 @@ class TaskController extends Controller
 
         $task->delete();
         return response()->json(['message' => 'Task deleted']);
+    }
+
+    public function recentActivities()
+    {
+        $activities = Task::with('user:id,name') // Get user name
+            ->select('id', 'user_id', 'title', 'status', 'updated_at')
+            ->orderBy('updated_at', 'desc') // Order by latest update
+            ->limit(10) // Limit to 10 recent activities
+            ->get()
+            ->map(fn($task) => [
+                'id' => $task->id,
+                'title' => $task->title,
+                'status' => $task->status,
+                'updated_at' => Carbon::parse($task->updated_at)->diffForHumans(),
+                'user' => ['name' => $task->user->name]
+            ]);
+
+        return response()->json(['activities' => $activities], 200);
     }
 }
