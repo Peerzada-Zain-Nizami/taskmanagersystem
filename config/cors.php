@@ -17,7 +17,7 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['api/*'],
 
     'allowed_origins' => ['https://task-manager-system-client.vercel.app/'],
 
