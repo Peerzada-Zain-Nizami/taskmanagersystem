@@ -9,6 +9,9 @@ use App\Models\Category;
 
 class StatsController extends Controller
 {
+    /**
+     * Get system statistics.
+     */
     public function index()
     {
         $stats = [

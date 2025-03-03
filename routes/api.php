@@ -66,9 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
         function () {
             Route::resource('/tasks', TaskController::class)->only(['store', 'update', 'show', 'destroy']);
             Route::get('/tasks', [TaskController::class, 'userTasks']);
-            Route::post('/tasks/{task}/comment', [TaskCommentController::class, 'store']);
             Route::get('/tasks/{task}/comments', [TaskCommentController::class, 'index']);
-            Route::delete('/task-comments/{id}/delete', [TaskCommentController::class, 'userCommentDestroy']);
             Route::get('categories', [CategoryController::class, 'index']);
         }
     );

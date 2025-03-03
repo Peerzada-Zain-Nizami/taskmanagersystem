@@ -11,20 +11,18 @@ use Illuminate\Support\Facades\Validator;
 class TaskCommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Get all comments for a task.
      */
     public function index(Task $task)
     {
-        return response()->json($task->comments);
+        return response()->json([
+            'message' => 'Task comments retrieved successfully',
+            'comments' => $task->comments()->with('user:id,name')->latest()->get()
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a new comment for a task.
      */
     public function store(Request $request, Task $task)
     {
@@ -53,24 +51,9 @@ class TaskCommentController extends Controller
         }
     }
 
-    public function userCommentDestroy($id)
-    {
-        $comment = TaskComment::find($id);
-
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
-        }
-
-        // Ensure user can delete only their own comment
-        if ($comment->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $comment->delete();
-
-        return response()->json(['message' => 'Comment deleted successfully'], 200);
-    }
-
+    /**
+     * Admin deletes any comment.
+     */
     public function adminCommentDestroy($id)
     {
         $comment = TaskComment::find($id);
