@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/tasks', [TaskController::class, 'adminIndex']);
         Route::post('/tasks/{task}/comment', [TaskCommentController::class, 'store']);
         Route::get('/tasks/{task}/comment', [TaskCommentController::class, 'index']);
+
+        //stats
+        Route::get('/stats', [StatsController::class, 'index']);
     });
 
     // 🚀 User-Only Routes
