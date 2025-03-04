@@ -1,66 +1,146 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 9 Task Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 🛠 Project Setup Instructions
 
-## About Laravel
+### **Step 1: Clone the Repository**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+git clone <repository-url>
+cd <project-folder>
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **Step 2: Install Dependencies**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+composer install
+```
 
-## Learning Laravel
+### **Step 3: Configure Environment File**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+cp .env.example .env
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Set up the following in the `.env` file:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Database Configuration**
+- **Mail Configuration** (if required)
+- **Sanctum & JWT Keys** (for authentication)
 
-## Laravel Sponsors
+### **Step 4: Generate Application Key**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+php artisan key:generate
+```
 
-### Premium Partners
+### **Step 5: Run Migrations & Seed Database**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```bash
+php artisan migrate --seed
+```
 
-## Contributing
+**Super Admin Credentials:**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Email:** [admin@gmail.com](mailto\:admin@gmail.com)
+- **Password:** admin786
 
-## Code of Conduct
+### **Step 6: Serve the Application**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+Now visit `http://127.0.0.1:8000` in your browser.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🚀 Features & Workflow
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### **User Registration & Approval**
+
+1. A new user registers via the `/register` API.
+2. A **notification is sent to the Super Admin** about the new registration.
+3. The **Super Admin approves the user** and assigns a role.
+4. If the **role is **``, the user logs in and is redirected to the **User Dashboard**.
+
+### **Task Management**
+
+- Users can **Create, Update, Delete, and Manage Tasks**.
+- While creating a task, users **select a category** from the dropdown (Categories created by the Super Admin).
+- **Admin can view all tasks** and **comment on them**, which both **User & Admin** can see.
+
+### **Admin Features**
+
+- **View & Approve Users**
+- **Assign Roles**
+- **Manage Categories** (Create, Update, Delete)
+- **View & Comment on Tasks**
+
+### **User Features**
+
+- **Manage Tasks** (Create, Edit, Delete)
+- **View Admin Comments**
+- **Select Task Category while creating a task**
+
+---
+
+## 📌 API Endpoints
+
+### **Public Routes**
+
+- `POST /register` - Register User
+- `POST /login` - User Login
+- `POST /forgot-password` - Forgot Password
+- `POST /reset-password` - Reset Password
+
+### **Admin Routes (Protected)**
+
+- `GET /admin/users` - List Users
+- `POST /admin/approve-user/{id}` - Approve User
+- `DELETE /admin/destroy-user/{id}` - Delete User
+- `POST /admin/update-user/{id}` - Update User Role
+- `GET /admin/categories` - Get Categories
+- `POST /admin/categories` - Create Category
+- `PUT /admin/categories/{id}` - Update Category
+- `DELETE /admin/categories/{id}` - Delete Category
+- `GET /admin/tasks` - Get All Tasks
+- `POST /admin/tasks/{task}/comment` - Add Comment on Task
+- `GET /admin/tasks/{task}/comment` - Get Comments on Task
+- `GET /admin/recent-activities` - Recent Activities
+- `GET /admin/task-counts` - Get Task Counts (Completed, Pending, In Progress)
+- `GET /admin/stats` - Get Stats
+- `GET /admin/notifications` - Get Notifications
+- `POST /admin/notifications/{id}/mark-as-read` - Mark Notification as Read
+
+### **User Routes (Protected)**
+
+- `GET /user/tasks` - Get User Tasks
+- `POST /user/tasks` - Create Task
+- `PUT /user/tasks/{task}` - Update Task
+- `DELETE /user/tasks/{task}` - Delete Task
+- `GET /user/tasks/{task}/comments` - Get Task Comments
+- `GET /user/categories` - Get Categories
+
+### **Common Routes**
+
+- `POST /logout` - Logout User
+
+---
+
+## 📂 Technologies Used
+
+- **Laravel 9** (Backend)
+- **Sanctum Authentication**
+- **MySQL** (Database)
+- **Eloquent ORM**
+- **Reaxt.js **
+- **Bootstrap/Tailwind CSS**
+
+---
+
+## 🎯 Additional Features
+
+- **Form Validations Applied** ✅
+- **Search, Filters & Pagination on Tables** ✅
+- **Proper Role-Based Access Control** ✅
+
